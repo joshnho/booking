@@ -1,37 +1,13 @@
-import { useState } from 'react';
-import axios from 'axios';
-
-const RegisterForm = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:8000/api/register', {
-        name,
-        email,
-        password,
-      });
-      console.log('REGISTER USER ==> ', res);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    if (name === 'name') {
-      setName(value);
-    } else if (name === 'email') {
-      setEmail(value);
-    } else if (name === 'password') {
-      setPassword(value);
-    }
-  };
-
+const RegisterForm = ({
+  name,
+  setName,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  handleChange,
+  handleSubmit,
+}) => {
   return (
     <form onSubmit={handleSubmit} className="mt-3">
       <div className="form-group mb-3">
