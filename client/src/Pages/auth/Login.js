@@ -1,11 +1,62 @@
-import React from 'react'
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { login } from '../../store/actions/auth';
+
+import LoginForm from '../../components/auth/LoginForm';
 
 const Login = () => {
-  return (
-    <div className='container-fluid h1 p-5 text-center'>
-      Login Page
-    </div>
-  )
-}
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-export default Login
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('SEND LOGIN DATA', { email, password });
+    try {
+      const res = await login({ email, password });
+      if (res.data) {
+        console.log(
+          'save user res in redux state and local storage then redirect'
+        );
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+      // if (error.response.status === 400) toast.error(error.response.data);
+    }
+  };
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    if (name === 'email') {
+      setEmail(value);
+    } else if (name === 'password') {
+      setPassword(value);
+    }
+  };
+
+  return (
+    <>
+      <div className="container-fluid bg-secondary p-5 text-center">
+        <h1>Login</h1>
+      </div>
+
+      <div className="container">
+        <div className="row">
+          <div className="col-md-5 offset-md-3">
+            <LoginForm
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Login;
