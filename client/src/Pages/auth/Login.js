@@ -25,7 +25,7 @@ const Login = () => {
           payload: res.data,
         });
         toast.success('Login successful');
-        history.push('/');
+        history.push('/dashboard');
       }
     } catch (error) {
       toast.error('Login failed');

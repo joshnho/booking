@@ -3,8 +3,10 @@ import { ToastContainer } from 'react-toastify';
 
 import Home from './Pages/Home';
 import Login from './Pages/auth/Login';
+import Dashboard from './Pages/user/Dashboard';
 import Register from './Pages/auth/Register';
 import Navbar from './components/Navbar';
+import PrivateRoute from './components/PrivateRoute';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,9 +20,10 @@ const App = () => {
         autoClose={1500}
       />
       <Switch>
-        <Home exact path="/" component={Home} />
-        <Login path="/login" component={Login} />
-        <Register path="/register" component={Register} />
+        <Route exact path="/" component={Home} />
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+        <PrivateRoute path="/dashboard" component={Dashboard} />
       </Switch>
     </BrowserRouter>
   );
