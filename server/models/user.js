@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
-const { Schema } = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
@@ -30,8 +30,10 @@ const userSchema = new Schema(
 );
 
 userSchema.pre('save', function (next) {
+  const user = this;
+
   if (user.isModified('password')) {
-    return bcrypt.hash(this.password, 12, function (err, hash) {
+    return bcrypt.hash(user.password, 12, function (err, hash) {
       if (err) {
         console.log('Password Hash Error', err);
         return next(err);
