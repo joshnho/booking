@@ -5,7 +5,8 @@ import App from './App';
 // Redux imports
 import { Provider } from 'react-redux';
 import store from './store/store';
-// Redux store
+
+import 'antd/dist/antd.min.css';
 
 ReactDOM.render(
   <React.StrictMode>

@@ -8,6 +8,7 @@ import DashboardSeller from './Pages/user/DashboardSeller';
 import Register from './Pages/auth/Register';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
+import NewHotel from './hotels/NewHotel';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -22,11 +23,16 @@ const App = () => {
       />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
 
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
-        <PrivateRoute path="/dashboard/seller" component={DashboardSeller} />
+        <PrivateRoute
+          exact
+          path="/dashboard/seller"
+          component={DashboardSeller}
+        />
+        <PrivateRoute exact path="/hotels/new" component={NewHotel} />
       </Switch>
     </BrowserRouter>
   );

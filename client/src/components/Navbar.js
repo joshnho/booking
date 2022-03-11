@@ -18,6 +18,13 @@ const Navbar = () => {
       <Link className="nav-link" to="/">
         Home
       </Link>
+
+      {auth && (
+        <Link className="nav-link" to="/dashboard">
+          Dashboard
+        </Link>
+      )}
+
       {auth ? (
         <Link className="nav-link" onClick={logout} to="/login">
           Logout

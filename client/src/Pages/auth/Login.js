@@ -24,7 +24,7 @@ const Login = () => {
           type: 'LOGGED_IN_USER',
           payload: res.data,
         });
-        toast.success('Login successful');
+        toast.success(`Welcome, ${res.data.user.name}!`);
         history.push('/dashboard');
       }
     } catch (error) {
