@@ -9,6 +9,7 @@ import Register from './Pages/auth/Register';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
 import NewHotel from './hotels/NewHotel';
+import StripeCallback from './stripe/StripeCallback';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -33,6 +34,11 @@ const App = () => {
           component={DashboardSeller}
         />
         <PrivateRoute exact path="/hotels/new" component={NewHotel} />
+        <PrivateRoute
+          exact
+          path="/stripe/callback"
+          component={StripeCallback}
+        />
       </Switch>
     </BrowserRouter>
   );
