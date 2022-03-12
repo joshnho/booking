@@ -30,3 +30,18 @@ export const createConnectAccount = async (req, res) => {
     res.status(400).send('Account connection failed');
   }
 };
+
+export const getAccountStatus = async (req, res) => {
+  const user = await User.findById(req.user._id).exec();
+  const account = await stripe.accounts.retrieve(user.stripe_account_id);
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,
+    {
+      stripe_seller: account,
+    },
+    { new: true }
+  )
+    .select('-password')
+    .exec();
+  res.json(updatedUser);
+};
