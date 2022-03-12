@@ -3,10 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { LoadingOutlined } from '@ant-design/icons';
 
+import { updateUserInLocalStorage } from '../store/actions/auth';
 import { getAccountStatus } from '../store/actions/stripe';
 
 const StripeCallback = () => {
   const { auth } = useSelector((state) => ({ ...state }));
+  const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,7 +18,13 @@ const StripeCallback = () => {
   const accountStatus = async () => {
     try {
       const res = await getAccountStatus(auth.token);
-      console.log(res);
+      updateUserInLocalStorage(res.data, () => {
+        dispatch({
+          type: 'LOGGED_IN_USER',
+          payload: res.data,
+        });
+        history.push('/dashboard/seller');
+      });
     } catch (error) {
       console.log(error);
     }
