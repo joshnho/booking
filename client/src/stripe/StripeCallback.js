@@ -12,7 +12,9 @@ const StripeCallback = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (auth?.token) accountStatus();
+    if (auth && auth.token) {
+      return accountStatus();
+    }
   }, [auth]);
 
   const accountStatus = async () => {
