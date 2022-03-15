@@ -5,8 +5,9 @@ import queryString from 'query-string';
 const stripe = Stripe(process.env.STRIPE_SECRET);
 
 export const createConnectAccount = async (req, res) => {
+  const user = await User.findById(req.user._id).exec();
+
   try {
-    const user = await User.findById(req.user._id).exec();
     if (!user.stripe_account_id) {
       const account = await stripe.accounts.create({
         type: 'express',
@@ -45,19 +46,26 @@ const updateDelayDays = async (accountId) => {
 };
 
 export const getAccountStatus = async (req, res) => {
-  const user = await User.findById(req.user._id).exec();
-  const account = await stripe.accounts.retrieve(user.stripe_account_id);
-  const updatedAccount = await updateDelayDays(account.id);
-  const updatedUser = await User.findByIdAndUpdate(
-    user._id,
-    {
-      stripe_seller: updatedAccount,
-    },
-    { new: true }
-  )
-    .select('-password')
-    .exec();
-  res.json(updatedUser);
+  try {
+    const user = await User.findById(req.user._id).exec();
+    const account = await stripe.accounts.retrieve(user.stripe_account_id);
+    if (user && account) {
+      const updatedAccount = await updateDelayDays(account.id);
+      const updatedUser = await User.findByIdAndUpdate(
+        user._id,
+        {
+          stripe_seller: updatedAccount,
+        },
+        { new: true }
+      )
+        .select('-password')
+        .exec();
+      res.json(updatedUser);
+    }
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getAccountBalance = async (req, res) => {
