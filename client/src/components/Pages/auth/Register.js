@@ -1,34 +1,30 @@
 import { useState } from 'react';
-import { toast } from 'react-toastify';
-import { login } from '../../store/actions/auth';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import RegisterForm from '../../../components/auth/RegisterForm';
+import { toast } from 'react-toastify';
+import { register } from '../../../store/actions/auth';
 
-import LoginForm from '../../components/auth/LoginForm';
+import 'react-toastify/dist/ReactToastify.css';
 
-const Login = () => {
+export const Register = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const dispatch = useDispatch();
   const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('SEND LOGIN DATA', { email, password });
     try {
-      const res = await login({ email, password });
-      if (res.data) {
-        window.localStorage.setItem('auth', JSON.stringify(res.data));
-        dispatch({
-          type: 'LOGGED_IN_USER',
-          payload: res.data,
-        });
-        toast.success(`Welcome, ${res.data.user.name}!`);
-        history.push('/dashboard');
-      }
+      await register({
+        name,
+        email,
+        password,
+      });
+      toast.success('User successfully created. Please login');
+      history.push('/login');
     } catch (error) {
-      toast.error('Login failed');
       console.log(error);
       if (error.response.status === 400) toast.error(error.response.data);
     }
@@ -37,7 +33,9 @@ const Login = () => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    if (name === 'email') {
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'email') {
       setEmail(value);
     } else if (name === 'password') {
       setPassword(value);
@@ -47,13 +45,14 @@ const Login = () => {
   return (
     <>
       <div className="container-fluid bg-secondary p-5 text-center">
-        <h1>Login</h1>
+        <h1>Register</h1>
       </div>
-
       <div className="container">
         <div className="row">
-          <div className="col-md-5 offset-md-3">
-            <LoginForm
+          <div className="col-md-6 offset-md-3">
+            <RegisterForm
+              name={name}
+              setName={setName}
               email={email}
               setEmail={setEmail}
               password={password}
@@ -68,4 +67,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

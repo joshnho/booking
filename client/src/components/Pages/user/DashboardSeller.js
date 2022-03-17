@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { HomeOutlined } from '@ant-design/icons';
 
-import DashboardNav from '../../components/DashboardNav';
-import ConnectNav from '../../components/ConnectNav';
-import { createConnectAccount } from '../../store/actions/stripe';
+import DashboardNav from '../../DashboardNav';
+import ConnectNav from '../../ConnectNav';
+import { createConnectAccount } from '../../../store/actions/stripe';
 
 const DashboardSeller = () => {
   const [loading, setLoading] = useState(false);

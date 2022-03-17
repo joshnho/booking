@@ -1,14 +1,14 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import Home from './Pages/Home';
-import Login from './Pages/auth/Login';
-import Dashboard from './Pages/user/Dashboard';
-import DashboardSeller from './Pages/user/DashboardSeller';
-import Register from './Pages/auth/Register';
+import Home from './components/Pages/Home';
+import Login from './components/Pages/auth/Login';
+import Dashboard from './components/Pages/user/Dashboard';
+import DashboardSeller from './components/Pages/user/DashboardSeller';
+import Register from './components/Pages/auth/Register';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
-import NewHotel from './hotels/NewHotel';
+import NewHotel from './components/hotels/NewHotel';
 import StripeCallback from './stripe/StripeCallback';
 
 import 'react-toastify/dist/ReactToastify.css';
