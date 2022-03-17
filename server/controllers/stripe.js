@@ -5,9 +5,8 @@ import queryString from 'query-string';
 const stripe = Stripe(process.env.STRIPE_SECRET);
 
 export const createConnectAccount = async (req, res) => {
-  const user = await User.findById(req.user._id).exec();
-
   try {
+    const user = await User.findById(req.user._id).exec();
     if (!user.stripe_account_id) {
       const account = await stripe.accounts.create({
         type: 'express',

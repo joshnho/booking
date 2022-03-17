@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import PlacesAutocomplete from 'react-google-autocomplete';
 import { DatePicker, Select } from 'antd';
@@ -13,6 +14,8 @@ const config = {
 };
 
 const NewHotel = () => {
+  const { auth } = useSelector((state) => ({ ...state }));
+  const { token } = auth;
   const [values, setValues] = useState({
     title: '',
     content: '',
@@ -28,10 +31,25 @@ const NewHotel = () => {
   );
   const { title, content, image, price, from, to, bed } = values;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
-    console.log(location);
+
+    let hotelData = new FormData();
+    hotelData.append('title', title);
+    hotelData.append('content', content);
+    hotelData.append('location', location);
+    hotelData.append('price', price);
+    hotelData.append('from', from);
+    hotelData.append('to', to);
+    hotelData.append('bed', bed);
+    image && hotelData.append('image', image);
+
+    let res = await createHotel(token, hotelData);
+    console.log('HOTEL DATA RES', res);
+    toast('New hotel successfully posted!');
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   const handleImageChange = (e) => {
@@ -78,7 +96,8 @@ const NewHotel = () => {
           className="form-control m-2"
           placeholder="City, State"
           name="location"
-          defaultValue={location}
+          value={location}
+          // defaultValue={location}
           apiKey={config.apiKey}
           onChange={(e) => setLocation(e.target.value)}
           onPlaceSelected={(place) => setLocation(place.formatted_address)}
