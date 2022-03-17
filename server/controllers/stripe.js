@@ -48,20 +48,20 @@ export const getAccountStatus = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).exec();
     const account = await stripe.accounts.retrieve(user.stripe_account_id);
-    if (user && account) {
-      const updatedAccount = await updateDelayDays(account.id);
-      const updatedUser = await User.findByIdAndUpdate(
-        user._id,
-        {
-          stripe_seller: updatedAccount,
-        },
-        { new: true }
-      )
-        .select('-password')
-        .exec();
-      res.json(updatedUser);
-    }
-    res.json(user);
+    // if (user && account) {
+    const updatedAccount = await updateDelayDays(account.id);
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      {
+        stripe_seller: updatedAccount,
+      },
+      { new: true }
+    )
+      .select('-password')
+      .exec();
+    res.json(updatedUser);
+    // }
+    // res.json(user);
   } catch (error) {
     console.log(error);
   }

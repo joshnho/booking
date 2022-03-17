@@ -12,23 +12,24 @@ const StripeCallback = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (auth && auth.token) accountStatus();
-  }, [auth]);
-
-  const accountStatus = async () => {
-    try {
-      const res = await getAccountStatus(auth.token);
-      updateUserInLocalStorage(res.data, () => {
-        dispatch({
-          type: 'LOGGED_IN_USER',
-          payload: res.data,
-        });
-        history.push('/dashboard/seller');
-      });
-    } catch (error) {
-      console.log(error);
+    if (auth && auth.token) {
+      const accountStatus = async () => {
+        try {
+          const res = await getAccountStatus(auth.token);
+          updateUserInLocalStorage(res.data, () => {
+            dispatch({
+              type: 'LOGGED_IN_USER',
+              payload: res.data,
+            });
+            window.location.href = '/dashboard/seller';
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      accountStatus();
     }
-  };
+  }, [auth, dispatch, history]);
 
   return (
     <div className="d-flex justify-content-center p-5">
